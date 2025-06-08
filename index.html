@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Free Fire Script Register</title>
+  <style>
+    body {
+      margin: 0;
+      font-family: 'Segoe UI', sans-serif;
+      background: linear-gradient(to right, #0f2027, #203a43, #2c5364);
+      color: #ffffff;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+    }
+
+    .container {
+      background: rgba(255, 255, 255, 0.05);
+      padding: 40px;
+      border-radius: 15px;
+      text-align: center;
+      box-shadow: 0 0 20px rgba(0, 255, 255, 0.2);
+    }
+
+    h1 {
+      margin-bottom: 20px;
+      font-size: 28px;
+      color: #00ffff;
+    }
+
+    button {
+      background-color: #00ffff;
+      color: #000;
+      padding: 12px 25px;
+      font-size: 16px;
+      border: none;
+      border-radius: 30px;
+      cursor: pointer;
+      transition: 0.3s ease;
+    }
+
+    button.registered {
+      background-color: #00c853;
+      color: #fff;
+    }
+
+    #status {
+      margin-top: 20px;
+      font-size: 16px;
+      color: #00ffcc;
+      display: none;
+    }
+
+    .note {
+      margin-top: 10px;
+      font-size: 14px;
+      color: #aaa;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>🔥 Free Fire Script Register</h1>
+    <button id="registerBtn" onclick="register()">🟢 Register</button>
+    <div id="status">Register Complete</div>
+    <div class="note">Once registered, you can log in from the script</div>
+  </div>
+
+  <script>
+    function getDeviceID() {
+      return "user-" + Math.floor(Math.random() * 1000000000);
+    }
+
+    function register() {
+      let uid = localStorage.getItem("ff_uid");
+      if (!uid) {
+        uid = getDeviceID();
+        localStorage.setItem("ff_uid", uid);
+      }
+
+      fetch(`https://ff-script-login-default-rtdb.firebaseio.com/users/${uid}.json`, {
+        method: "PUT",
+        body: JSON.stringify(true)
+      })
+      .then(() => {
+        const btn = document.getElementById("registerBtn");
+        btn.classList.add("registered");
+        document.getElementById("status").style.display = "block";
+      })
+      .catch(() => alert("❌ Registration Failed!"));
+    }
+  </script>
+</body>
+</html>
